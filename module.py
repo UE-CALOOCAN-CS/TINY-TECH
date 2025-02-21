@@ -16,12 +16,10 @@ def open_survey():
     webbrowser.open("https://www.tiktok.com/@parenghayb")
 
 def show_module(module_name):
-    # Pause any currently playing video
     for name, controls in video_controls.items():
         if controls["cap"] is not None and not controls["paused"]:
-            controls["paused"] = True  # Pause the video
-    
-    # Switch module display
+            controls["paused"] = True  
+
     for frame in module_frames.values():
         frame.place_forget()
     module_frames[module_name].place(x=160, y=50, width=1290, height=900)
@@ -33,8 +31,8 @@ def select_video(module_canvas, module_name):
     video_path = filedialog.askopenfilename(filetypes=[("Video Files", "*.mp4;*.avi;*.mov;*.mkv")])
     if video_path:
         cap = cv2.VideoCapture(video_path)
-        video_controls[module_name]["cap"] = cap  # Store video capture object
-        video_controls[module_name]["paused"] = False  # Reset pause state
+        video_controls[module_name]["cap"] = cap  
+        video_controls[module_name]["paused"] = False  
         play_video(module_name)
 
 def play_video(module_name):
@@ -42,20 +40,20 @@ def play_video(module_name):
     cap = controls["cap"]
     
     if cap is None or controls["paused"]:
-        return  # Stop updating if paused
+        return  
 
     ret, frame = cap.read()
     if ret:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame = cv2.resize(frame, (800, 450))  # Resize video
+        frame = cv2.resize(frame, (800, 450))  
         frame = Image.fromarray(frame)
         frame = ImageTk.PhotoImage(frame)
 
         module_canvas = controls["canvas"]
         module_canvas.create_image(0, 0, anchor=tk.NW, image=frame)
-        module_canvas.image = frame  # Keep reference
+        module_canvas.image = frame  
         
-        root.after(25, lambda: play_video(module_name))  # Refresh at ~40 FPS
+        root.after(25, lambda: play_video(module_name))  
     else:
         cap.release()
 
@@ -63,7 +61,7 @@ def toggle_play_pause(module_name):
     controls = video_controls[module_name]
     controls["paused"] = not controls["paused"]
 
-    if not controls["paused"]:  # Resume playback
+    if not controls["paused"]:  
         play_video(module_name)
 
 root = tk.Tk()
@@ -81,6 +79,7 @@ button_frame.pack(fill="both", expand=True)
 
 main_items = [
     ("Home", lambda: print("Home Clicked")),
+    ("Link", open_survey),  # New "Link" button
     ("Profile", lambda: print("Profile Clicked")),
     ("Settings", lambda: print("Settings Clicked")),
 ]
@@ -93,12 +92,12 @@ logout_button = tk.Button(main_menu, text="Logout", font=("Arial", 12), width=15
 logout_button.pack(side="bottom", pady=50)
 
 module_frames = {}
-video_controls = {}  # Store video state for each module
+video_controls = {}  
 
 module_descriptions = {
-    "Module 1": "This is the description for module 1. This is the description for module 1. This is the description for module 1. This is the description for module 1.",
-    "Module 2": "This is the description for module 2. This is the description for module 2. This is the description for module 2.",
-    "Module 3": "This is the description for module 3. This is the description for module 3. This is the description for module 3."
+    "Module 1": "This is the description for module 1.",
+    "Module 2": "This is the description for module 2.",
+    "Module 3": "This is the description for module 3."
 }
 
 for i in range(1, 4):
