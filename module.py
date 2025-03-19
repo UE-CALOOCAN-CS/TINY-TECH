@@ -22,7 +22,14 @@ def show_module(module_name):
 
     for frame in module_frames.values():
         frame.place_forget()
+    
     module_frames[module_name].place(x=160, y=50, width=1290, height=900)
+
+    # Start the 10-second timer for the current module’s continue button
+    if "continue_button" in module_controls[module_name]:
+        continue_button = module_controls[module_name]["continue_button"]
+        continue_button.config(state=tk.DISABLED, bg="gray")  # Reset button each time
+        root.after(10000, lambda: enable_continue_button(continue_button))
 
 def logout():
     root.quit()
@@ -64,6 +71,9 @@ def toggle_play_pause(module_name):
     if not controls["paused"]:  
         play_video(module_name)
 
+def enable_continue_button(button):
+    button.config(state=tk.NORMAL, bg="blue")
+
 root = tk.Tk()
 root.title("Module")
 root.geometry("1300x950")
@@ -79,7 +89,7 @@ button_frame.pack(fill="both", expand=True)
 
 main_items = [
     ("Home", lambda: print("Home Clicked")),
-    ("Link", open_survey),  # New "Link" button
+    ("Link", open_survey),
     ("Profile", lambda: print("Profile Clicked")),
     ("Settings", lambda: print("Settings Clicked")),
 ]
@@ -99,6 +109,9 @@ module_descriptions = {
     "Module 2": "This is the description for module 2.",
     "Module 3": "This is the description for module 3."
 }
+
+for i in range(1, 4):
+    module_controls = {}  # Dictionary to store continue buttons
 
 for i in range(1, 4):
     module_name = f"Module {i}"
@@ -123,9 +136,20 @@ for i in range(1, 4):
 
     load_video_button = tk.Button(button_frame, text="Load Video", font=("Arial", 12), command=lambda c=canvas, m=module_name: select_video(c, m))
     load_video_button.pack(side="left", padx=5)
-
+    
+    navigation_frame = tk.Frame(frame)
+    navigation_frame.pack(pady=20)
+    
+    back_button = tk.Button(navigation_frame, text="Back", font=("Arial", 12), command=lambda: print("Back Pressed"))
+    back_button.pack(side="left", padx=10)
+    
+    continue_button = tk.Button(navigation_frame, text="Continue", font=("Arial", 12), state=tk.DISABLED, bg="gray")
+    continue_button.pack(side="left", padx=10)
+    
     module_frames[module_name] = frame
     video_controls[module_name] = {"cap": None, "paused": True, "canvas": canvas}
+    module_controls[module_name] = {"continue_button": continue_button}  # Store button reference
+
 
 top_buttons = [
     ("Module 1", lambda: show_module("Module 1")),
