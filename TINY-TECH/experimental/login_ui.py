@@ -83,7 +83,7 @@ class LoginUI:
         social_container.pack(pady=20)
         
         google_icon = ctk.CTkImage(light_image=Image.open("images/google-logo.png"), size=(24, 24))
-        google_button = ctk.CTkButton(social_container, text="Sign in with Google", font=self.heading_font,
+        google_button = ctk.CTkButton(social_container, text="Sign in with Google",
                                     width=180, fg_color="#DB4437", hover_color="#C1351D",
                                     image=google_icon, compound="left")
         google_button.pack(pady=5)
@@ -99,58 +99,62 @@ class LoginUI:
                              font=("Calibri", 36, "bold"))
         logo_label.pack(side="bottom", pady=(0, 5))
 
-    def load_signup_components(self):
+    def load_signup_components(self): #insert design
         # Create main container that splits the window into two parts
         main_container = ctk.CTkFrame(self.root)
         main_container.pack(fill="both", expand=True)
         
-        # Right container for signup (1/3 width) - NOW ON THE LEFT
-        right_container = ctk.CTkFrame(main_container)
-        right_container.pack(side="left", fill="both", expand=False)
+        # Right container for signup (1/3 width) 
+        right_container = ctk.CTkFrame(main_container, fg_color="#ffffff")
+        right_container.pack(side="right", fill="both", expand=False)
         right_container.configure(width=400)  # 1/3 of 1920
         right_container.pack_propagate(False)
         
-        # Left container for video/image (2/3 width) - NOW ON THE RIGHT
+        # Left container for video/image (2/3 width)
         left_container = ctk.CTkFrame(main_container, fg_color="gray75")  # Placeholder color
-        left_container.pack(side="right", fill="both", expand=True)
+        left_container.pack(side="left", fill="both", expand=True)
+
+        left_image=ctk.CTkImage(light_image=Image.open("images/tiny-tech-bg.png"), size=(1280, 1080))
+        image_label=ctk.CTkLabel(left_container, image=left_image, text="")
+        image_label.pack(expand=True)
 
         # Title
         title = ctk.CTkLabel(right_container, text="Sign Up", font=("Arial", 24, "bold"))
-        title.pack(pady=(50,20))
+        title.pack(pady=(40,10))
 
         # Form container
-        form_container = ctk.CTkFrame(right_container)
-        form_container.pack(pady=20, padx=20)
+        form_container = ctk.CTkFrame(right_container, fg_color="#ffffff")
+        form_container.pack(pady=0, padx=60)
         form_container.configure(width=300, height=480)
         form_container.pack_propagate(False)
 
         # First Name
-        ctk.CTkLabel(form_container, text="First Name:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="FIRST NAME", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.firstname_entry = ctk.CTkEntry(form_container, width=240)
         self.firstname_entry.pack(fill="x")
 
         # Last Name
-        ctk.CTkLabel(form_container, text="Last Name:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="LAST NAME", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.lastname_entry = ctk.CTkEntry(form_container, width=240)
         self.lastname_entry.pack(fill="x")
 
         # Email
-        ctk.CTkLabel(form_container, text="Email:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="EMAIL", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.email_entry = ctk.CTkEntry(form_container, width=240)
         self.email_entry.pack(fill="x")
 
         # Username
-        ctk.CTkLabel(form_container, text="Username:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="USERNAME", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.new_username_entry = ctk.CTkEntry(form_container, width=240)
         self.new_username_entry.pack(fill="x")
 
         # Password
-        ctk.CTkLabel(form_container, text="Password:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="PASSWORD", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.new_password_entry = ctk.CTkEntry(form_container, show="*", width=240)
         self.new_password_entry.pack(fill="x")
 
         # Confirm Password
-        ctk.CTkLabel(form_container, text="Confirm Password:", font=("Arial", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
+        ctk.CTkLabel(form_container, text="CONFIRM PASSWORD", font=("Calibri", 14, "bold"), anchor="w").pack(fill="x", pady=(10, 0))
         self.confirm_password_entry = ctk.CTkEntry(form_container, show="*", width=240)
         self.confirm_password_entry.pack(fill="x")
 
@@ -163,25 +167,16 @@ class LoginUI:
 
         # Buttons container
         button_container = ctk.CTkFrame(right_container, fg_color="transparent")
-        button_container.pack(pady=20)
+        button_container.pack(pady=5)
 
         # Submit and Back buttons
-        submit_button = ctk.CTkButton(button_container, text="Sign Up",
-                                    command=self.handle_signup, width=120)
-        submit_button.pack(side="left", padx=10)
-
-        back_button = ctk.CTkButton(button_container, text="Back to Login",
+        back_button = ctk.CTkButton(button_container, text="BACK TO LOGIN", font=("Calibri", 14, "bold"),
                                   command=self.show_login_page, width=120)
         back_button.pack(side="left", padx=10)
 
-        # Logo and version at bottom
-        version_label = ctk.CTkLabel(right_container, text="VERSION NUMBER", 
-                                   font=("Arial", 10))
-        version_label.pack(side="bottom", pady=(0, 50))
-
-        logo_label = ctk.CTkLabel(right_container, text="TINYTECH LOGO", 
-                                font=("Arial", 24, "bold"))
-        logo_label.pack(side="bottom", pady=(0, 5))
+        submit_button = ctk.CTkButton(button_container, text="SIGN UP", font=("Calibri", 14, "bold"),
+                                    command=self.handle_signup, width=120)
+        submit_button.pack(side="left", padx=10)
 
     def show_login_page(self):
         self.clear_window()
